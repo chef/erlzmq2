@@ -47,8 +47,7 @@ clean:
 	else \
 		true; \
 	fi
-
-
+	rm -rf $(DEPS)/local
 
 distclean:
 	@rm -rf $(DEPS)
