@@ -30,12 +30,6 @@ endif
 
 all: $(LOCAL_ZEROMQ)
 
-test:
-	echo $(CWD)
-	echo $(DEPS)/local
-	echo $(dir $(DEPS)/local)
-	echo $(abspath $(DEPS)/local)
-
 clean:
 	if test -e $(DEPS)/zeromq4/Makefile; then \
 		cd $(DEPS)/zeromq4; make clean; \
