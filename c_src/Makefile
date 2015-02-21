@@ -50,7 +50,7 @@ $(DEPS):
 	@mkdir -p $(DEPS)
 
 # Libzmq
-$(DEPS)/zeromq-$(ZEROMQ_VERSION).tar.gz: $(DEPS)
+$(DEPS)/zeromq-$(ZEROMQ_VERSION).tar.gz: | $(DEPS)
 	@echo downloading zeromq-$(ZEROMQ_VERSION)
 	@curl http://download.zeromq.org/zeromq-$(ZEROMQ_VERSION).tar.gz -o $(DEPS)/zeromq-$(ZEROMQ_VERSION).tar.gz	
 
@@ -65,7 +65,7 @@ libzmq.a: $(ZEROMQ_PREFIX)/lib/libzmq.a
 
 
 # Libsodium
-$(DEPS)/libsodium-$(LIBSODIUM_VERSION).tgz: $(DEPS)
+$(DEPS)/libsodium-$(LIBSODIUM_VERSION).tgz: | $(DEPS)
 	@echo downloading libsodium-$(LIBSODIUM_VERSION)
 	@curl https://github.com/jedisct1/libsodium/tarball/$(LIBSODIUM_VERSION) -o $(DEPS)/libsodium-$(LIBSODIUM_VERSION).tgz -L
 
