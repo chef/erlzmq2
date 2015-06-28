@@ -4,6 +4,7 @@ DEPS:=../deps
 #
 # In the event we have a system zeromq, we can skip this whole build process and use that
 #
+$(warning "Using ZEROMQ_PREFIX" $(ZEROMQ_PREFIX))
 ifndef ZEROMQ_PREFIX
 # poor man's realpath
 #ZEROMQ_PREFIX := $(shell readlink -f "$(DEPS)/local")
