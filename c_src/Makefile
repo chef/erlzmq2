@@ -25,7 +25,7 @@ distclean:
 
 $(DEPS)/zeromq4:
 	@mkdir -p $(DEPS)
-	@curl http://download.zeromq.org/zeromq-$(ZEROMQ_VERSION).tar.gz -o $(DEPS)/zeromq-$(ZEROMQ_VERSION).tar.gz
+	@curl -L https://archive.org/download/zeromq_$(ZEROMQ_VERSION)/zeromq-$(ZEROMQ_VERSION).tar.gz -o $(DEPS)/zeromq-$(ZEROMQ_VERSION).tar.gz
 	@cd $(DEPS) && tar xzvfp zeromq-$(ZEROMQ_VERSION).tar.gz && mv zeromq-$(ZEROMQ_VERSION) zeromq4
 
 $(DEPS)/zeromq4/src/.libs/libzmq.a: $(DEPS)/zeromq4
