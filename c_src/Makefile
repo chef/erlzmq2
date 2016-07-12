@@ -24,9 +24,13 @@ ifndef ZEROMQ_VERSION
 ZEROMQ_VERSION=4.0.5
 endif
 
+ZEROMQ_URL=https://archive.org/download/zeromq_$(ZEROMQ_VERSION)/zeromq-$(ZEROMQ_VERSION).tar.gz
+
 ifndef LIBSODIUM_VERSION
-LIBSODIUM_VERSION=1.0.2
+LIBSODIUM_VERSION=1.0.3
 endif
+
+LIBSODIUM_URL=https://github.com/jedisct1/libsodium/tarball/$(LIBSODIUM_VERSION)
 
 all: $(LOCAL_ZEROMQ)
 
@@ -51,8 +55,8 @@ $(DEPS):
 
 # Libzmq
 $(DEPS)/zeromq-$(ZEROMQ_VERSION).tar.gz: | $(DEPS)
-	@echo downloading zeromq-$(ZEROMQ_VERSION)
-	@curl http://download.zeromq.org/zeromq-$(ZEROMQ_VERSION).tar.gz -o $(DEPS)/zeromq-$(ZEROMQ_VERSION).tar.gz	
+	@echo downloading zeromq-$(ZEROMQ_VERSION) from $(ZEROMQ_URL)
+	@curl -L $(ZEROMQ_URL) -o $(DEPS)/zeromq-$(ZEROMQ_VERSION).tar.gz
 
 $(DEPS)/zeromq4: $(DEPS)/zeromq-$(ZEROMQ_VERSION).tar.gz
 	@mkdir -p $(DEPS)/zeromq4
@@ -66,8 +70,8 @@ libzmq.a: $(ZEROMQ_PREFIX)/lib/libzmq.a
 
 # Libsodium
 $(DEPS)/libsodium-$(LIBSODIUM_VERSION).tgz: | $(DEPS)
-	@echo downloading libsodium-$(LIBSODIUM_VERSION)
-	@curl https://github.com/jedisct1/libsodium/tarball/$(LIBSODIUM_VERSION) -o $(DEPS)/libsodium-$(LIBSODIUM_VERSION).tgz -L
+	@echo downloading libsodium-$(LIBSODIUM_VERSION) from $(LIBSODIUM_URL)
+	@curl -L $(LIBSODIUM_URL) -o $(DEPS)/libsodium-$(LIBSODIUM_VERSION).tgz
 
 $(DEPS)/libsodium: $(DEPS)/libsodium-$(LIBSODIUM_VERSION).tgz
 	@mkdir -p $(DEPS)/libsodium
@@ -77,4 +81,3 @@ $(ZEROMQ_PREFIX)/lib/libsodium.a: $(DEPS)/libsodium
 	cd $(DEPS)/libsodium && ./autogen.sh && ./configure --prefix $(ZEROMQ_PREFIX) && make && make install
 
 libsodium.a: $(ZEROMQ_PREFIX)/lib/libsodium.a
-
