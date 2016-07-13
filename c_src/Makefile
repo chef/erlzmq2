@@ -2,13 +2,14 @@ LINUX=$(shell uname | grep Linux | wc -l | xargs echo)
 DEPS:=../deps
 
 #
-# In the event we have a system zeromq, we can skip this whole build process and use that
+# In the event we have a system zeromq, we can skip this whole build
+# process and use that
 #
-ifndef ZEROMQ_PREFIX
-# poor man's realpath
-#ZEROMQ_PREFIX := $(shell readlink -f "$(DEPS)/local")
+ifdef ZEROMQ_PREFIX
+ALL_DEPS=print_prefix
+else
 ZEROMQ_PREFIX := $(abspath $(DEPS)/local)
-LOCAL_ZEROMQ=libzmq.a
+ALL_DEPS=print_prefix libzmq.a
 endif
 
 
@@ -24,11 +25,15 @@ ifndef ZEROMQ_VERSION
 ZEROMQ_VERSION=4.0.5
 endif
 
+ZEROMQ_URL=https://archive.org/download/zeromq_$(ZEROMQ_VERSION)/zeromq-$(ZEROMQ_VERSION).tar.gz
+
 ifndef LIBSODIUM_VERSION
-LIBSODIUM_VERSION=1.0.2
+LIBSODIUM_VERSION=1.0.3
 endif
 
-all: $(LOCAL_ZEROMQ)
+LIBSODIUM_URL=https://github.com/jedisct1/libsodium/tarball/$(LIBSODIUM_VERSION)
+
+all: $(ALL_DEPS)
 
 clean:
 	if test -e $(DEPS)/zeromq4/Makefile; then \
@@ -46,13 +51,16 @@ clean:
 distclean:
 	@rm -rf $(DEPS)
 
+print_prefix:
+	@echo "Building with ZEROMQ_PREFIX=$(ZEROMQ_PREFIX)"
+
 $(DEPS):
 	@mkdir -p $(DEPS)
 
 # Libzmq
 $(DEPS)/zeromq-$(ZEROMQ_VERSION).tar.gz: | $(DEPS)
-	@echo downloading zeromq-$(ZEROMQ_VERSION)
-	@curl http://download.zeromq.org/zeromq-$(ZEROMQ_VERSION).tar.gz -o $(DEPS)/zeromq-$(ZEROMQ_VERSION).tar.gz	
+	@echo downloading zeromq-$(ZEROMQ_VERSION) from $(ZEROMQ_URL)
+	@curl -L $(ZEROMQ_URL) -o $(DEPS)/zeromq-$(ZEROMQ_VERSION).tar.gz
 
 $(DEPS)/zeromq4: $(DEPS)/zeromq-$(ZEROMQ_VERSION).tar.gz
 	@mkdir -p $(DEPS)/zeromq4
@@ -66,8 +74,8 @@ libzmq.a: $(ZEROMQ_PREFIX)/lib/libzmq.a
 
 # Libsodium
 $(DEPS)/libsodium-$(LIBSODIUM_VERSION).tgz: | $(DEPS)
-	@echo downloading libsodium-$(LIBSODIUM_VERSION)
-	@curl https://github.com/jedisct1/libsodium/tarball/$(LIBSODIUM_VERSION) -o $(DEPS)/libsodium-$(LIBSODIUM_VERSION).tgz -L
+	@echo downloading libsodium-$(LIBSODIUM_VERSION) from $(LIBSODIUM_URL)
+	@curl -L $(LIBSODIUM_URL) -o $(DEPS)/libsodium-$(LIBSODIUM_VERSION).tgz
 
 $(DEPS)/libsodium: $(DEPS)/libsodium-$(LIBSODIUM_VERSION).tgz
 	@mkdir -p $(DEPS)/libsodium
@@ -77,4 +85,3 @@ $(ZEROMQ_PREFIX)/lib/libsodium.a: $(DEPS)/libsodium
 	cd $(DEPS)/libsodium && ./autogen.sh && ./configure --prefix $(ZEROMQ_PREFIX) && make && make install
 
 libsodium.a: $(ZEROMQ_PREFIX)/lib/libsodium.a
-
