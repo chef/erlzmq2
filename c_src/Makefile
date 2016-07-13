@@ -2,13 +2,14 @@ LINUX=$(shell uname | grep Linux | wc -l | xargs echo)
 DEPS:=../deps
 
 #
-# In the event we have a system zeromq, we can skip this whole build process and use that
+# In the event we have a system zeromq, we can skip this whole build
+# process and use that
 #
-ifndef ZEROMQ_PREFIX
-# poor man's realpath
-#ZEROMQ_PREFIX := $(shell readlink -f "$(DEPS)/local")
+ifdef ZEROMQ_PREFIX
+ALL_DEPS=print_prefix
+else
 ZEROMQ_PREFIX := $(abspath $(DEPS)/local)
-LOCAL_ZEROMQ=libzmq.a
+ALL_DEPS=print_prefix libzmq.a
 endif
 
 
@@ -32,7 +33,7 @@ endif
 
 LIBSODIUM_URL=https://github.com/jedisct1/libsodium/tarball/$(LIBSODIUM_VERSION)
 
-all: $(LOCAL_ZEROMQ)
+all: $(ALL_DEPS)
 
 clean:
 	if test -e $(DEPS)/zeromq4/Makefile; then \
@@ -49,6 +50,9 @@ clean:
 
 distclean:
 	@rm -rf $(DEPS)
+
+print_prefix:
+	@echo "Building with ZEROMQ_PREFIX=$(ZEROMQ_PREFIX)"
 
 $(DEPS):
 	@mkdir -p $(DEPS)
