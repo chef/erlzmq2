@@ -49,6 +49,13 @@
          curve_keypair/0,
          z85_decode/1,
          version/0]).
+
+%% An opaque handle to an erlzmq context.
+-opaque erlzmq_context() :: binary().
+
+%% An opaque handle to an erlzmq socket.
+-opaque erlzmq_socket() :: {pos_integer(), binary()}.
+
 -export_type([erlzmq_socket/0, erlzmq_context/0]).
 
 %% @equiv context(1, [])

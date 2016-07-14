@@ -1,7 +1,6 @@
 -module(erlzmq_test).
 -include_lib("eunit/include/eunit.hrl").
 -include_lib("erlzmq.hrl").
--export_type([erlzmq_socket/0, erlzmq_context/0]).                              
 -export([worker/2]).
 
 % provides some context for failures only viewable within the C code
@@ -16,7 +15,7 @@
 -define(PRINT_CHECK(ANY),
         port_command(PRINT_PORT,
                      io_lib:format("~w:~w ~p~n", [?MODULE, ?LINE, ANY]))).
--define(PRINT_END, 
+-define(PRINT_END,
         port_command(PRINT_PORT,
                      io_lib:format("~w:~w end~n", [?MODULE, ?LINE])),
         port_close(PRINT_PORT),
