@@ -81,7 +81,7 @@ context(Opts) when is_list(Opts) ->
 %% <i>For more information see
 %% <a href="http://api.zeromq.org/master:zmq-init">zmq_init</a></i>
 %% @end
--spec context(Threads :: pos_integer(), [{max_sockets, S :: pos_integer}]) ->
+-spec context(Threads :: pos_integer(), [{max_sockets, S :: pos_integer()}]) ->
     {ok, erlzmq_context()} |
     erlzmq_error().
 context(Threads, Opts) when is_integer(Threads), is_list(Opts) ->
