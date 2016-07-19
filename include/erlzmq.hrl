@@ -100,12 +100,6 @@
 %% {@link erlzmq:recv/2. recv/2}
 -type erlzmq_data() :: iolist().
 
-%% An opaque handle to an erlzmq context.
--opaque erlzmq_context() :: binary().
-
-%% An opaque handle to an erlzmq socket.
--opaque erlzmq_socket() :: {pos_integer(), binary()}.
-
 %% The individual flags to use with {@link erlzmq:send/3. send/3}
 %% and {@link erlzmq:recv/2. recv/2}.<br />
 %% <i>For more information see
