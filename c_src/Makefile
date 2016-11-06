@@ -22,7 +22,7 @@ ZMQ_FLAGS=$(ZMQ_FLAGS_BASE)
 endif
 
 ifndef ZEROMQ_VERSION
-ZEROMQ_VERSION=4.0.5
+ZEROMQ_VERSION=4.0.4
 endif
 
 ZEROMQ_URL=https://archive.org/download/zeromq_$(ZEROMQ_VERSION)/zeromq-$(ZEROMQ_VERSION).tar.gz
