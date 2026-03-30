@@ -5,7 +5,6 @@ c_src/*.o
 deps
 graphs
 perf/*.beam
-.eunit
 doc/edoc-info
 doc/erlang.png
 doc/ezmq.html
@@ -14,3 +13,6 @@ doc/overview-summary.html
 doc/packages-frame.html
 doc/stylesheet.css
 doc/modules-frame.html
+.rebar3
+compile_commands.json
+_build
